@@ -15,5 +15,7 @@ navLinks.addEventListener("click", function(){
     navLinks.classList.remove("open")
     menuBtnIcon.setAttribute("class", "ri-menu-line")
 })
-
+document.querySelector('.view-all').addEventListener('click', () => {
+    alert('View all destinations clicked!');
+});
 
