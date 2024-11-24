@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonely Lonely</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alatsi&family=Bebas+Neue&family=Miniver&display=swap" rel="stylesheet">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"/>
+</head>
+<body>
+    
+    <nav>
+        <div class="nav-header">
+            <div class="nav-logo">
+                <a href="#">Lonely <span>Travel</span></a> 
+            </div>
+            <div class="nav-menu-btn" id="menu-btn">
+                <span><i class="ri-menu-line"></i></span>
+            </div>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html" class="nav-link">Destinations</a></li>
+            <li><a href="planning.html" class="nav-link">Planning</a></li>
+            <li><a href="shop.html">Shop</a></li>
+        </ul>
+        <div class="nav-btn">
+            <button class="btn sign-up" a="">Sign Up</button>
+            <button class="btn sign-in">Sign In</button>
+        </div>
+    </nav>  
+
+    <div class="div-container">
+        <div class="div-img">
+            <img src="img/GettyImages-1061872058.avif" alt="">
+        </div>
+        <div class="content">
+            <h1>Discover story-worthy travel moments</h1>
+        </div>
+        <div class="filter-container">
+            <div class="filter">
+              <label for="type-filter">Filter by type of place</label>
+              <select id="type-filter" name="type-filter">
+                <option value="all">All types</option>
+                <option value="cities">London</option>
+                <option value="cities">Los Angeles</option>
+                <option value="cities">Paris</option>
+                <option value="cities">New York City</option>
+                <option value="cities">San Francisco</option>
+                <option value="cities">Cape Town</option>
+                <option value="cities">Tokyo</option>
+                <option value="cities">Romes</option>
+                <option value="cities">Chicago</option>
+                <option value="cities">Berlin</option>
+                
+              </select>
+            </div>
+          
+            <div class="sort">
+              <label for="sort-filter">Sort places by</label>
+              <select id="sort-filter" name="sort-filter">
+                <option value="popular">Most Popular</option>
+                <option value="alphabetical">Alphabetical</option>
+                <option value="recent">Recently Added</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid-container">
+            <div class="card " >
+              <img src="img/study-in-london.jpg" class="London" alt="London">
+              <div class="card-content">
+                <p class="location">ENGLAND</p>
+                <h3 class="city">London</h3>
+              </div>
+            </div>
+          
+            <div class="card">
+              <img src="img/Los-Angeles.avif" class="los" alt="Los Angeles">
+              <div class="card-content">
+                <p class="location">SOUTHERN CALIFORNIA</p>
+                <h3 class="city">Los Angeles</h3>
+              </div>
+            </div>
+          
+            <div class="card">
+              <img src="img/Parking-paris.webp" alt="Paris">
+              <div class="card-content">
+                <p class="location">FRANCE</p>
+                <h3 class="city">Paris</h3>
+              </div>
+            </div>
+          
+            <div class="card">
+              <img src="img/new york.jpg" alt="New York City">
+              <div class="card-content">
+                <p class="location">NEW YORK</p>
+                <h3 class="city">New York City</h3>
+              </div>
+            </div>
+          
+            <div class="card">
+              <img src="img/San-Francisco.webp" alt="San Francisco">
+              <div class="card-content">
+                <p class="location">THE BAY AREA</p>
+                <h3 class="city">San Francisco</h3>
+              </div>
+            </div>
+          
+            <div class="card">
+              <img src="img/Cape Town.avif" class="cape" alt="Cape Town">
+              <div class="card-content">
+                <p class="location">SOUTH AFRICA</p>
+                <h3 class="city">Cape Town</h3>
+              </div>
+            </div>
+            <div class="card ">
+                <img src="img/Tokyo.jpg" class="Tokyo">
+                <div class="card-content">
+                  <p class="location">Japan</p>
+                  <h3 class="city">Tokyo</h3>
+                </div>
+              </div>
+              <div class="card">
+                <img src="img/Rome.avif" alt="Rome">
+                <div class="card-content">
+                  <p class="location">Italy</p>
+                  <h3 class="city">Romes</h3>
+                </div>
+              </div>
+              <div class="card">
+                <img src="img/Chicago.jpg" alt="Chicago">
+                <div class="card-content">
+                  <p class="location">North America</p>
+                  <h3 class="city">Chicago</h3>
+                </div>
+              </div>
+              <div class="card">
+                <img src="img/Berlin.avif" alt="Berlin">
+                <div class="card-content">
+                  <p class="location">Germany</p>
+                  <h3 class="city">Berlin</h3>
+                </div>
+              </div>
+          </div>
+    </div>
+
+
+    <div class="chatbot">
+        <header>
+        <h2>Chatbot</h2>
+        </header>
+      <ul class="chatbox">
+        <li class="chat incoming">
+          <span class="amterial-symbols-outlined"><i class="ri-robot-2-line"></i></span>
+          <p>Hi there <br> How can I help you today?</p>
+        </li>
+        <li class="chat outgoing">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+        </li>
+      </ul>
+      <div class="chat-input">
+        <textarea placeholder="Enter a message..."></textarea>
+        <span id="send-btn" class="amterial-symbols-outlined"><i class="ri-send-plane-fill"></i></span>
+      </div>
+    </div>
+    
+
+
+
+
+    <footer>
+
+    </footer>
+
+  
+
+    <script src="js/main.js"></script>
+</body>
+</html>

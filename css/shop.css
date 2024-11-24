@@ -1,0 +1,303 @@
+*{
+    padding: 0;
+   margin: 0;
+   box-sizing: border-box; 
+}
+img{
+    display: flex;
+    width: 100%;
+}
+a{
+    text-decoration: none;
+    transition: 0.3s;
+}
+body{
+    font-family: "Bebas Neue", sans-serif;
+
+}
+nav{
+    position: fixed;
+    isolation: isolate;
+    width: 100%;
+    z-index: 9;
+    
+}
+.nav-header{
+    padding: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff  ;
+    padding-bottom: 10px;
+    
+}
+
+
+.nav-logo a{
+    font-size: 1.75rem;
+    font-weight: 400;
+    font-family: "Bebas Neue", sans-serif;
+    color: #000080;
+}
+.nav-menu-btn{
+    font-size: 1.5rem;
+    color: black;
+    cursor: pointer;
+}
+.nav-links{
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    padding: 2rem;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: #fff;
+    transition: 0.5s;
+    z-index: -1;
+    transform: translateY(-150%);
+}
+.nav-links.open{
+    transform: translateY(0);
+}
+.nav-links a{
+    font-weight: 500;
+    color: black;
+}
+.nav-links a:hover{
+    color:  #d9d9d9;
+}
+.nav-btn{
+    display: none;
+}
+.div-container{
+    
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    
+   
+}
+.content {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    z-index: 2;
+    
+}
+.content h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.div-img {
+    filter: blur(2px);
+}
+
+/* General Reset */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.guidebooks-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.guidebooks-title {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 30px;
+}
+
+.guides {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.guide-category {
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.guide-heading {
+    color: #007BFF;
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.guide-subheading {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.guide-images {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.guide-image {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.guide-description {
+    margin-bottom: 20px;
+}
+
+.guide-icon {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.guide-icon span {
+    font-size: 1.5em;
+    margin-right: 10px;
+}
+
+.guide-text {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.shop-link {
+    display: inline-block;
+    background-color: #007BFF;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.shop-link:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+@media (width > 768px) {
+    nav{
+        position:static;
+        padding-block: 2rem 0;
+        padding-inline: 1rem;
+        width: 100%;
+        margin-inline: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+
+    .nav-header{
+        flex: 1;
+        padding: 0;
+        background-color: transparent;
+    }
+
+    .nav-logo a{
+        color: black;
+        display: flex;
+    }
+
+    .nav-logo a span{
+        color: #000080;
+        
+    }
+
+    .nav-menu-btn{
+        display: none;
+    }
+    
+    .nav-links{
+        position: static;
+        padding: 0;
+        flex-direction: row;
+        background-color: transparent;
+        transform: none;
+        
+    }
+
+    .nav-links a{
+        padding-block: 5px;
+        color: black;
+        border-bottom: 4px solid transparent;
+    }
+    .nav-links a:hover{
+        border-color: #000080;
+    }
+    .nav-btn{
+        display: flex;
+        flex: 1;
+    }
+
+    .nav-btn .btn{
+        padding: .75rem 1.5rem;
+        outline: none;
+        border: none;
+        font-size: 1rem;
+        white-space: nowrap;
+        border-radius: 10px;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+    
+    .sign-up{
+        color: black;
+        background-color: transparent;
+    }
+    .sign-up:hover{
+        color: #000080;
+        
+    }
+    .sign-in{
+        color: white;
+        background-color: #0000ff;
+    }
+    .sign-in:hover{
+        background-color: #000080;
+    }
+    .div-container{
+        width: 100%;
+        
+    }
+    .div-img{
+        width: 100%;
+    
+    }
+    #div-container-2{
+        width: 100%;
+    }
+    .div-img{
+        width: 100%;
+    }
+   
+}
