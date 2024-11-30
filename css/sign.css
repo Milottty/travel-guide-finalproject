@@ -1,0 +1,172 @@
+*{
+    padding: 0;
+   margin: 0;
+   box-sizing: border-box; 
+}
+img{
+    display: flex;
+    width: 100%;
+}
+a{
+    text-decoration: none;
+    transition: 0.3s;
+}
+body{
+    font-family: "Bebas Neue", sans-serif;
+
+}
+nav{
+    position: fixed;
+    isolation: isolate;
+    width: 100%;
+    z-index: 9;
+    
+}
+.nav-header{
+    padding: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff  ;
+    padding-bottom: 10px;
+    
+}
+
+
+.nav-logo a{
+    font-size: 1.75rem;
+    font-weight: 400;
+    font-family: "Bebas Neue", sans-serif;
+    color: #000080;
+}
+.nav-menu-btn{
+    font-size: 1.5rem;
+    color: black;
+    cursor: pointer;
+}
+.nav-links{
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    padding: 2rem;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: #fff;
+    transition: 0.5s;
+    z-index: -1;
+    transform: translateY(-150%);
+}
+.nav-links.open{
+    transform: translateY(0);
+}
+.nav-links a{
+    font-weight: 500;
+    color: black;
+}
+.nav-links a:hover{
+    color:  #d9d9d9;
+}
+.nav-btn{
+    display: none;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+
+.form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+.button-group {
+    text-align: center;
+}
+
+.button-group .btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-group .btn:hover {
+    background-color: #45a049;
+}
+
+
+.forgot-password,
+.signup-link {
+    text-align: center;
+    font-size: 14px;
+}
+
+.forgot-password a,
+.signup-link a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.forgot-password a:hover,
+.signup-link a:hover {
+    text-decoration: underline;
+}
