@@ -265,32 +265,6 @@ nav{
     margin: 10px 0 0;
 }
 
-.chatbot{
-    position: fixed;
-    right: 40px;
-    bottom: 100px;
-    width: 260px;
-    border-radius: 15px;
-    box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
-                0 32px 64px -48px rgba(0, 0, 0, 0.5)
-                
-}
-.chatbot header{
-    background-color: #724AE8;
-    padding: 16px 0;
-    text-align: center;
-}
-.chatbot header h2{
-    color: #fff;
-    font-size: 1.4rem;
-}
-.chatbot .chatbox{
-    height: 210px;
-    overflow-y: auto;
-    padding: 15px 20px 70px;
-}
-
-
 @media (width > 768px) {
     nav{
         position:static;
@@ -365,11 +339,11 @@ nav{
         color: #000080;
         
     }
-    .sign-in{
+    .sign-in a{
         color: white;
         background-color: #0000ff;
     }
-    .sign-in:hover{
+    .sign-in:hover a{
         background-color: #000080;
     }
     .div-container{

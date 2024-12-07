@@ -18,4 +18,3 @@ navLinks.addEventListener("click", function(){
 document.querySelector('.view-all').addEventListener('click', () => {
     alert('View all destinations clicked!');
 });
-
