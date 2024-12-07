@@ -362,3 +362,15 @@ nav{
     }
    
 }
+.nav-btn{
+    background-color: #000080 !important;
+    color: #fff !important;
+    border: none  !important;
+    cursor: pointer  !important;
+    transition: background-color 0.3s ease  !important;
+    width: 100%  !important;
+    padding: 8px 12px  !important
+}
+.nav-btn:hover{
+    background-color: #c0392b  !important;
+}
