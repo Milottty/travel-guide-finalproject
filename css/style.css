@@ -15,6 +15,7 @@ body{
     font-family: "Bebas Neue", sans-serif;
 
 }
+
 nav{
     position: fixed;
     isolation: isolate;
@@ -339,38 +340,11 @@ nav{
         color: #000080;
         
     }
-    .sign-in a{
+    .sign-in{
         color: white;
         background-color: #0000ff;
     }
-    .sign-in:hover a{
+    .sign-in:hover{
         background-color: #000080;
     }
-    .div-container{
-        width: 100%;
-        
-    }
-    .div-img{
-        width: 100%;
-    
-    }
-    #div-container-2{
-        width: 100%;
-    }
-    .div-img{
-        width: 100%;
-    }
-   
-}
-.nav-btn{
-    background-color: #000080 !important;
-    color: #fff !important;
-    border: none  !important;
-    cursor: pointer  !important;
-    transition: background-color 0.3s ease  !important;
-    width: 100%  !important;
-    padding: 8px 12px  !important
-}
-.nav-btn:hover{
-    background-color: #c0392b  !important;
 }
