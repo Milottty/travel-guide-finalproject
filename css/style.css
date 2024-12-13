@@ -15,6 +15,7 @@ body{
     font-family: "Bebas Neue", sans-serif;
 
 }
+
 nav{
     position: fixed;
     isolation: isolate;
@@ -87,15 +88,17 @@ nav{
 }
 .content {
     position: absolute;
-    top: 30%;
+   
     left: 50%;
+    margin-bottom: 40px;
+    bottom: 93%;
     transform: translate(-50%, -50%);
     color: white;
-    z-index: 2;
+    z-index: 1;
     
 }
 .content h1 {
-    font-size: 2.5rem;
+    font-size: 24xp;
     font-weight: bold;
     margin-bottom: 1rem;
     text-align: center;
@@ -187,24 +190,16 @@ nav{
     margin: 5px 0;
   }
   
-  .card-content .city {
-    font-size: 18px;
-    font-weight: bold;
-    color: #222;
-  }
-.card .Tokyo{
-    width: 220px;
-    height: 150px;
+.h1-text{
+    color: #0000ff;
+    font-weight: 900;
+    font-size: 22px;
+        margin-top: 10px;
+        margin-left: 30px;
 }
-.card .cape{
-    width: 240px;
-    height: 150px;
-}
-.card .los{
-    height: 150px;
-}
-.card .London{
-    height: 150px;
+.p-text{
+    margin-left: 10px;
+    font-size: 10px;
 }
 .articles-container {
     display: grid;
@@ -265,6 +260,27 @@ nav{
     margin: 10px 0 0;
 }
 
+@media (width > 419px) {
+    .content {
+        position: absolute;
+        left: 50%;
+        margin-bottom: 40px;
+        bottom: 82%;
+        transform: translate(-50%, -50%);
+        color: white;
+        z-index: 1;
+        
+    }
+    .content h1 {
+        font-size: 24xp;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+
+
+}
 @media (width > 768px) {
     nav{
         position:static;
@@ -339,38 +355,66 @@ nav{
         color: #000080;
         
     }
-    .sign-in a{
+    .sign-in{
         color: white;
         background-color: #0000ff;
     }
-    .sign-in:hover a{
+    .sign-in:hover{
         background-color: #000080;
     }
-    .div-container{
-        width: 100%;
+    .h1-text{
+        color: #0000ff;
+        font-weight: 900;
+        margin-top: 40px;
+        margin-left: 300px;
+    }
+    .p-text{
+        margin-left: 300px;
+        font-size: 10px;
+    }
+    .content {
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        z-index: 2;
         
     }
-    .div-img{
-        width: 100%;
-    
+    .content h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        text-align: center;
     }
-    #div-container-2{
-        width: 100%;
+    .h1-text{
+        color: #0000ff;
+        font-weight: 900;
+        margin-top: 40px;
+        margin-left: 300px;
     }
-    .div-img{
-        width: 100%;
+    .p-text{
+        margin-left: 300px;
+        font-size: 10px;
     }
-   
 }
-.nav-btn{
-    background-color: #000080 !important;
-    color: #fff !important;
-    border: none  !important;
-    cursor: pointer  !important;
-    transition: background-color 0.3s ease  !important;
-    width: 100%  !important;
-    padding: 8px 12px  !important
-}
-.nav-btn:hover{
-    background-color: #c0392b  !important;
+
+@media (width > 1000px){
+
+    .content {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        z-index: 2;
+        
+    }
+    .content h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
 }
