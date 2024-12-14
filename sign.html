@@ -12,6 +12,7 @@
     <link
     href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
     rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <nav>
@@ -40,7 +41,7 @@
         </div>
         <div class="sign-up-container">
             <h2>Sign Up</h2>
-            <form action="#">
+            <form action="index.html">
                 <div class="form-group">
                  <label for="name">Name</label >
                     <input type="text" id="name" name="name" required placeholder="Name">
@@ -50,8 +51,20 @@
                      <input type="text" id="username" name="username" required placeholder="Username">
                      <label for="email">Email</label>
                      <input type="email" id="email" name="email" required placeholder="Email">
-                     <label for="password">Password</label>
-                     <input type="password" id="password" name="password" required placeholder="Password">
+                     
+                     <label for="email">Password</label>
+                     <div class="password-container">
+                       
+                        <div class="password-input-container">
+                            <input type="password" id="password" class="password-input" placeholder="Enter your password" oninput="checkPassword()">
+                            <i id="togglePassword" class="fas fa-eye toggle-icon"></i>
+                        </div>
+                    </div>
+    
+        <ul>
+            <li id="numberRequirement" class="invalid">Must contain at least one number</li>
+            <li id="symbolRequirement" class="invalid">No symbols like @#%^:" are allowed</li>
+                    
                 </div>
                
                 <h4>Already have an account <a href="signinn.html">Sign-in</a></h4>
@@ -61,6 +74,8 @@
         </div>
     </div>
 
+
+  
 
     
     <script> window.chtlConfig = { chatbotId: "1162981525" } </script>
