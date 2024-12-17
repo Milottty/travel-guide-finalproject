@@ -19,7 +19,7 @@ body {
 }
 
 nav{
-    position: fixed;
+    /* position: fixed; */
     isolation: isolate;
     width: 100%;
     z-index: 9;

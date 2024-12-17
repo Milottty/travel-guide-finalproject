@@ -28,6 +28,8 @@ navLinks.addEventListener("click", function(){
 // Popup
 
 const shopBtn = document.getElementById("btn-popup");
+
+
 const PopUp = document.getElementById("popup");
 
 document.querySelectorAll(".popup-container").forEach((button, index) =>{
@@ -40,4 +42,5 @@ document.querySelectorAll(".popup-container").forEach((button, index) =>{
     shopBtn.addEventListener("click", function(){
        PopUp.classList.remove("close-popup"); 
     })
-})
+ })
+
