@@ -24,23 +24,25 @@ navLinks.addEventListener("click", function(){
 
 
 
+function initializePopups(buttonSelector, popupSelector, activeClass) {
+    const buttons = document.querySelectorAll(".shopNowButton"); 
+    const popups = document.querySelectorAll(".popup"); 
 
-// Popup
+    buttons.forEach((button, index) => {
+        button.addEventListener("click", function () {
+            popups[index].classList.add(activeClass); 
+        });
+    });
 
-const shopBtn = document.getElementById("btn-popup");
+    popups.forEach((popup) => {
+        const closeButton = popup.querySelector(".btn-close"); 
+        closeButton.addEventListener("click", function () {
+            popup.classList.remove(activeClass); 
+        });
+    });
+}
 
 
-const PopUp = document.getElementById("popup");
 
-document.querySelectorAll(".popup-container").forEach((button, index) =>{
-    shopBtn.addEventListener("click", function(){
-       PopUp.classList.add("open-popup"); 
-    })
-})
 
-document.querySelectorAll(".popup-container").forEach((button, index) =>{
-    shopBtn.addEventListener("click", function(){
-       PopUp.classList.remove("close-popup"); 
-    })
- })
-
+initializePopups(".shopNowButton", ".popup-container", "open-popup", ".okButton");
