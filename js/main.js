@@ -18,3 +18,23 @@ navLinks.addEventListener("click", function(){
 document.querySelector('.view-all').addEventListener('click', () => {
     alert('View all destinations clicked!');
 });
+
+
+
+
+ // Form submission logic
+ document.getElementById('reset-password-form').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent default form submission
+
+    // Get the values of the new password and confirm password fields
+    let newPassword = document.getElementById('new-password').value;
+    let confirmPassword = document.getElementById('confirm-password').value;
+
+    // Check if the new password and confirm password match
+    if (newPassword === confirmPassword) {
+        alert("Your password has been successfully reset.");
+        window.location.href = "index.html";  // Redirect to index.html
+    } else {
+        alert("Passwords do not match. Please try again.");
+    }
+});

@@ -87,3 +87,13 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+// setTimeout(function() {
+//     alert("Your verification code is: 1234");
+// }, 2000);
+
+   // Function to generate a random 6-digit number
+
+
+
+    

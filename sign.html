@@ -52,15 +52,23 @@
                      <label for="email">Email</label>
                      <input type="email" id="email" name="email" required placeholder="Email">
                      
-                     <label for="email">Password</label>
-                     <div class="password-container">
-                       
+                     <label for="password">Password</label>
+                     <div class="password-container">                 
                         <div class="password-input-container">
                             <input type="password" id="password" class="password-input" placeholder="Enter your password" oninput="checkPassword()">
                             <i id="togglePassword" class="fas fa-eye toggle-icon"></i>
                         </div>
+
                     </div>
-    
+                    <label for="password">Confirm Password</label>
+                    <div class="password-container">
+                        
+                       <div class="password-input-container">
+                           <input type="password" id="password" class="password-input" placeholder="Confirm Password" oninput="checkPassword()">
+                           <i id="togglePassword" class="fas fa-eye toggle-icon"></i>
+                       </div>
+
+                   </div>
         <ul>
             <li id="numberRequirement" class="invalid">Must contain at least one number</li>
             <li id="symbolRequirement" class="invalid">No symbols like @#%^:" are allowed</li>
