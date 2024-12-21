@@ -38,3 +38,26 @@ document.querySelector('.view-all').addEventListener('click', () => {
         alert("Passwords do not match. Please try again.");
     }
 });
+
+const backgrounds = [
+    '..img/GettyImages-1061872058.avif   ',
+    '..img/San-Francisco.webp',
+    '..img/Bruges.webp',
+    '..img/shutterstock1636820080.avif'
+];
+
+let currentIndex = 0;
+
+function changeBackground() {
+    // Update the background image
+    document.body.style.backgroundImage = `url('${backgrounds[currentIndex]}')`;
+
+    // Move to the next image index
+    currentIndex = (currentIndex + 1) % backgrounds.length;
+}
+
+// Initial background setup
+changeBackground();
+
+// Change the background every 5 seconds
+setInterval(changeBackground, 5000);
