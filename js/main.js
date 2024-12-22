@@ -61,3 +61,9 @@ changeBackground();
 
 // Change the background every 5 seconds
 setInterval(changeBackground, 5000);
+
+
+
+function navigateTo(url) {
+    window.location.href = url; // Replace with your desired URLs
+}
