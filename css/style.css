@@ -13,6 +13,7 @@ a{
 }
 body{
     font-family: "Bebas Neue", sans-serif;
+    overflow-x: hidden;
 
 }
 
@@ -62,6 +63,7 @@ nav{
     transition: 0.5s;
     z-index: -1;
     transform: translateY(-150%);
+    font-family: "Bebas Neue", sans-serif;
 }
 .nav-links.open{
     transform: translateY(0);
@@ -185,6 +187,7 @@ nav{
     gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
+    padding-bottom: 400px;
   }
   
   .card {
@@ -231,6 +234,67 @@ nav{
     font-size: 10px;
 }
 
+.wrapper{
+
+    position: absolute; 
+    width: 80vw;
+    transform: translate(-50%, -50%);
+    bottom: -160%;
+    left: 64%; 
+    display: flex;
+    gap: 10px;
+
+    
+
+}
+.container-stats{
+    width: 28vmin;
+    height: 28vmin;
+    border: 1px solid orange;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 1em 0;
+    position: relative;
+    font-size: 16px;
+    border-radius: 0.5em;
+    background-color: #21242b;
+    border-bottom: 10px solid #18f98f;
+}
+.ri{
+    color: #18f98f;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+span.num{
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 3em;
+}
+span.text{
+    color: #fff;
+    font-size: 1em;
+    text-align: center;
+    padding: 0.7em 0;
+    font-weight: 400;
+    line-height: 0;
+}
+
+
+@media screen and(max-width: 1024px){
+.wrapper{
+    margin-top: 500px;
+    width: 85vw;
+}
+.container-stats{
+    height: 26vmin;
+    width: 26vmin;
+    font-size: 12px;
+}
+    
+}
 @media (width > 419px) {
     .content {
         position: absolute;
@@ -307,7 +371,7 @@ nav{
         flex: 1;
     }
 
-    .nav-btn .btn{
+    .nav-btn .btn-sign-up-in {
         padding: .75rem 1.5rem;
         outline: none;
         border: none;
@@ -316,23 +380,47 @@ nav{
         border-radius: 10px;
         transition: 0.3s;
         cursor: pointer;
+        text-decoration: none;
     }
-    
-    .sign-up{
+    .btn-sign-up-in a{
+        text-decoration: none;
+    }
+    .sign-up a{
         color: black;
-        background-color: transparent;
     }
-    .sign-up:hover{
-        color: #000080;
+    .sign-up a:hover{
+    background-color: #000080;
+    color: white;
+    transition: 0.5s;
+    padding: .75rem 1.5rem;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    white-space: nowrap;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    text-decoration: none;
         
     }
-    .sign-in{
-        color: white;
-        background-color: #0000ff;
+    .sign-in a{
+        color: black;
+        
     }
-    .sign-in:hover{
-        background-color: #000080;
-    }
+    .sign-in a:hover{
+    background-color: #000080;
+    color: white;
+    transition: 0.5s;
+    padding: .75rem 1.5rem;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    white-space: nowrap;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    } 
     .h1-text{
         color: #0000ff;
         font-weight: 900;
@@ -396,12 +484,13 @@ nav{
     filter: brightness(1);
 }
 
+
 }
 
 @media (width > 1000px){
 
     .content {
-        position: absolute;
+        /* position: absolute; */
         top: 20%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -416,4 +505,32 @@ nav{
         text-align: center;
     }
 
+
+    
+
+}
+
+@media screen and(max-width: 768px){
+    .wrapper{
+        width: 90vw;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+    .container-stats{
+        width: calc(50% - 40px);
+        height: 30vmin;
+        font-size: 14px;
+    }
+    
+}
+@media screen and(max-width: 480px){
+    .wrapper{
+        gap: 15px;
+    }
+    .container-stats{
+        width: 100%;
+        height: 25vmin;
+        font-size: 8px;
+    }
+    
 }

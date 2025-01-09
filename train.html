@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train</title>
+    <link rel="stylesheet" href="css/train.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alatsi&family=Bebas+Neue&family=Miniver&display=swap" rel="stylesheet">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"/>
+</head>
+<body>
+     
+    <nav>
+        <div class="nav-header">
+            <div class="nav-logo">
+                <a href="#">Lonely <span>Travel</span></a> 
+            </div>
+            <div class="nav-menu-btn" id="menu-btn">
+                <span><i class="ri-menu-line"></i></span>
+            </div>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html" class="nav-link">Destinations</a></li>
+            <li><a href="planning.html" class="nav-link">Planning</a></li>
+            <li><a href="shop.html">Shop</a></li>
+        </ul>
+        
+        <div class="nav-btn">
+            <button   class="btn-sign-up-in sign-up"><a href="sign.html">Sign Up</a> </button>
+            <button class="btn-sign-up-in sign-in"><a href="signinn.html">Sign In</a></button>
+        </div>
+    </nav> 
+
+    <div  class="container">
+
+        <div class="centered-text">
+            <h1>24 of the world’s most incredible train journeys to book in 2025</h1>
+        </div>
+        <div class="div-img">
+            <img src="img/shutterstockeditorial1236609274.avif" alt="">
+        </div>
+
+
+
+
+        <div class="filter-container">
+            <label for="region">Filter by Region:</label>
+            <select id="region">
+              <option value="all">All</option>
+              <option value="europe">Europe</option>
+              <option value="asia">Asia</option>
+              <option value="america">America</option>
+              <option value="africa">Africa</option>
+            </select>
+          </div>
+    </div>
+
+    <div id="journeys-container">
+        <!-- JavaScript will populate this section with journeys -->
+      </div>
+
+
+
+
+
+
+    <script src="js/london.js"></script>
+</body>
+</html>

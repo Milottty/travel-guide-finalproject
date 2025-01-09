@@ -1,26 +1,19 @@
 *{
+    margin: 0;
     padding: 0;
-   margin: 0;
-   box-sizing: border-box; 
-}
-img{
-    display: flex;
-    width: 100%;
-}
-a{
-    text-decoration: none;
-    transition: 0.3s;
 }
 body{
-    font-family: "Bebas Neue", sans-serif;
-
+    overflow-x: hidden;
 }
-
+img{
+    width: 100%;
+}
 nav{
     position: fixed;
     isolation: isolate;
     width: 100%;
     z-index: 9;
+    
     
 }
 .nav-header{
@@ -77,71 +70,6 @@ nav{
 .nav-btn{
     display: none;
 }
-
-.first-container{
-    display: flex;
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
-}
-.main-h1{
-    position: absolute;
-    text-align: center;
-    margin-bottom: 40px;
-    top: 50%;
-    font-size: 43px ;
-    font-weight: 900;
-    color: white;
-    z-index: 1;
-}
-.main-h1 h1 {
-    font-size: 24xp;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    text-align: center;
-} 
-.section {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    color: white;
-    text-align: center;
-    background-size: cover;
-    background-position: center;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-    filter: brightness(0.6);
-    transition: 1s;
-}
-.section:hover {
-    transition: 1s ease-in;
-    filter: brightness(1);
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: 1;
-}
-
-.content {
-    position: relative;
-    z-index: 2;
-}
-.div-img {
-    
-    filter: blur(2px);
-
-   
-
-}
-
 
 @media (width > 768px) {
     nav{
@@ -200,6 +128,7 @@ nav{
 
     .nav-btn .btn-sign-up-in {
         padding: .75rem 1.5rem;
+        margin-right: 20px;
         outline: none;
         border: none;
         font-size: 1rem;
@@ -248,128 +177,62 @@ nav{
     cursor: pointer;
     text-decoration: none;
     } 
-    .div-img{
-        width: 100%;
-    }
-
-.content-container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.intro-text {
-    text-align: center;
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 20px;
-}
-
-.intro-text .author {
-    display: block;
-    font-size: 0.9rem;
-    color: #999;
-    margin-top: 5px;
-}
-
-.article-content p {
-    margin-bottom: 20px;
-    font-size: 1.1rem;
-}
-
-.article-content a {
-    color: #0077cc;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.article-content a:hover {
-    text-decoration: underline;
-}
-
-.advertisement {
-    text-align: center;
-    margin-top: 30px;
-    color: #888;
-    font-size: 0.9rem;
-    font-style: italic;
-}
-
-.img-2{
-    margin-top: 50px;
-    width: 810px;
-    margin-left: -26px;
-}
-
-.buttons {
-    margin-bottom: 30px;
-    margin-top: 50px;
-}
-.buttons button {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    margin: 5px;
-}
-.buttons button:hover {
-    background-color: #eaeaea;
-}
-.buttons .cart-button {
-    background-color: #007BFF;
-    color: white;
-}
-.buttons .cart-button:hover {
-    background-color: #0056b3;
-}
-.products {
+    /* styles.css */
+  
+  .centered-text {
+    padding-top: 100px;
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-.product-card {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    width: 200px;
-    padding: 20px;
+    align-items: center;
+    font-size: 24px;
+    margin-left: 10%;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-.product-card img {
-    max-width: 100%;
-    border-radius: 5px;
-    margin-bottom: 15px;
-}
-.product-card h3 {
-    font-size: 1.1rem;
-    margin: 10px 0;
-    color: #333;
-}
-.product-card p {
+  }
+  
+  .div-img{
+    padding-top: 10px;
+    width: 75%;
+    align-items: center;
+    margin-left: 13%;
+  }
+
+.filter-container {
+    margin: 20px;
+    text-align: center;
+  }
+  
+  #journeys-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .journey-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 300px;
+    overflow: hidden;
+    background-color: #fff;
+  }
+  
+  .journey-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .journey-card h3 {
+    margin: 10px;
+    font-size: 1.5rem;
+  }
+  
+  .journey-card p {
+    margin: 10px;
     font-size: 1rem;
-    margin-bottom: 15px;
-    color: #666;
+  }
+ 
+  
 }
-.product-card button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-.product-card button:hover {
-    background-color: #0056b3;
-}
-.best{
-    height: 225px;
-}
-}
+
+  
