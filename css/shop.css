@@ -74,6 +74,8 @@ nav{
 }
 .nav-btn{
     display: none;
+    justify-content: end;
+    
 }
 .div-container{
     
@@ -104,6 +106,71 @@ nav{
 .div-img {
     filter: blur(2px);
 }
+.nav-links a{
+    padding-block: 5px;
+    color: black;
+    border-bottom: 4px solid transparent;
+}
+.nav-links a:hover{
+    border-color: #000080;
+}
+.nav-btn{
+    display: flex;
+    flex: 1;
+}
+
+.nav-btn .btn-sign-up-in {
+    padding-top: 10px;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    white-space: nowrap;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+}
+.btn-sign-up-in a{
+    text-decoration: none;
+}
+.sign-up a{
+    color: black;
+}
+.sign-up a{
+background-color: #000080;
+color: white;
+transition: 0.5s;
+padding: .75rem 1.5rem;
+outline: none;
+border: none;
+font-size: 1rem;
+white-space: nowrap;
+border-radius: 10px;
+transition: 0.3s;
+cursor: pointer;
+text-decoration: none;
+    
+}
+.sign-in a{
+    color: black;
+    
+}
+.sign-in a{
+background-color: #000080;
+color: white;
+transition: 0.5s;
+padding: .75rem 1.5rem;
+outline: none;
+border: none;
+font-size: 1rem;
+white-space: nowrap;
+border-radius: 10px;
+transition: 0.3s;
+cursor: pointer;
+text-decoration: none;
+} 
+
+
 
 /* General Reset */
 body {
@@ -333,7 +400,7 @@ body {
         text-decoration: none;
     }
     .sign-up a{
-        color: black;
+        color: #fff;
     }
     .sign-up a:hover{
     background-color: #000080;
@@ -351,7 +418,7 @@ body {
         
     }
     .sign-in a{
-        color: black;
+        color: #fff;
         
     }
     .sign-in a:hover{

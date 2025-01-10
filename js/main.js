@@ -15,11 +15,6 @@ navLinks.addEventListener("click", function(){
     navLinks.classList.remove("open")
     menuBtnIcon.setAttribute("class", "ri-menu-line")
 })
-// document.querySelector('.view-all').addEventListener('click', () => {
-//     alert('View all destinations clicked!');
-// });
-
-
 
 
 
@@ -45,3 +40,30 @@ valueDisplay.forEach((visualDisplay) => {
         }
     }, duration);
 });
+
+
+
+
+
+
+// // Select all slides
+// const slides = document.querySelectorAll('.section');
+// let currentIndex = 0;
+
+// // Function to show the next slide
+// function showNextSlide() {
+//     // Remove the 'active' class from the current slide
+//     slides[currentIndex].classList.remove('active');
+
+//     // Update the index to the next slide
+//     currentIndex = (currentIndex + 1) % slides.length;
+
+//     // Add the 'active' class to the next slide
+//     slides[currentIndex].classList.add('active');
+// }
+
+// // Set the initial slide to active
+// slides[currentIndex].classList.add('active');
+
+// // Change slide every 5 seconds
+// setInterval(showNextSlide, 5000);

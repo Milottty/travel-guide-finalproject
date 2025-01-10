@@ -76,6 +76,7 @@ nav{
 }
 .nav-btn{
     display: none;
+    justify-content: end;
 }
 
 .first-container{
@@ -140,6 +141,137 @@ nav{
 
    
 
+}
+.nav-links a{
+    padding-block: 5px;
+    color: black;
+    border-bottom: 4px solid transparent;
+}
+.nav-links a:hover{
+    border-color: #000080;
+}
+.nav-btn{
+    display: flex;
+    flex: 1;
+}
+
+.nav-btn .btn-sign-up-in {
+    padding-top: 10px;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    white-space: nowrap;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+}
+.btn-sign-up-in a{
+    text-decoration: none;
+}
+.sign-up a{
+    color: #fff;
+}
+.sign-up a{
+background-color: #000080;
+color: white;
+transition: 0.5s;
+padding: .75rem 1.5rem;
+outline: none;
+border: none;
+font-size: 1rem;
+white-space: nowrap;
+border-radius: 10px;
+transition: 0.3s;
+cursor: pointer;
+text-decoration: none;
+    
+}
+.sign-in a{
+    color: #fff;
+    
+}
+.sign-in a{
+background-color: #000080;
+color: white;
+transition: 0.5s;
+padding: .75rem 1.5rem;
+outline: none;
+border: none;
+font-size: 1rem;
+white-space: nowrap;
+border-radius: 10px;
+transition: 0.3s;
+cursor: pointer;
+text-decoration: none;
+} 
+
+
+.buttons {
+    margin-bottom: 30px;
+    margin-top: 50px;
+}
+.buttons button {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 5px;
+}
+.buttons button:hover {
+    background-color: #eaeaea;
+}
+.buttons .cart-button {
+    background-color: #007BFF;
+    color: white;
+}
+.buttons .cart-button:hover {
+    background-color: #0056b3;
+}
+
+.products {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.product-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 200px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.product-card img {
+    max-width: 100%;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+.product-card h3 {
+    font-size: 1.1rem;
+    margin: 10px 0;
+    color: #333;
+}
+.product-card p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #666;
+}
+.product-card button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.product-card button:hover {
+    background-color: #0056b3;
 }
 
 
@@ -213,7 +345,7 @@ nav{
         text-decoration: none;
     }
     .sign-up a{
-        color: black;
+        color: #fff;
     }
     .sign-up a:hover{
     background-color: #000080;
@@ -231,7 +363,7 @@ nav{
         
     }
     .sign-in a{
-        color: black;
+        color: #fff;
         
     }
     .sign-in a:hover{
