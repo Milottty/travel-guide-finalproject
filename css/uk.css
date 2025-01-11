@@ -133,6 +133,7 @@ text-decoration: none;
 .div-img img{
     padding-top: 200px;
     width: 100%;
+    filter: blur(0.2rem);
 } 
 @media (width > 768px){
     nav{
@@ -276,7 +277,7 @@ h1 {
     font-weight: bold;
     margin-bottom: 1.5rem;
     color: #000;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .location {
@@ -402,6 +403,17 @@ p {
   
   .add-to-cart:hover {
     background-color: #005bb5;
+  }
+
+  .main-h1{
+    position: absolute;
+        left: 5%;
+        text-align: center;
+        top: 70%;
+        font-size: 63px;
+        font-weight: 900;
+        color: white;
+        z-index: 1;
   }
 
 }
