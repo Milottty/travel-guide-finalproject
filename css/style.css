@@ -154,10 +154,14 @@ nav{
 .nav-btn{
     display: flex;
     flex: 1;
+    /* visibility: hidden; */
 }
+.nav-btn.visible {
+    visibility: visible;
+  }
 
 .nav-btn .btn-sign-up-in {
-    padding-top: 10px;
+    /* padding-top: 10px; */
     outline: none;
     border: none;
     font-size: 1rem;
@@ -166,6 +170,7 @@ nav{
     transition: 0.3s;
     cursor: pointer;
     text-decoration: none;
+    /* visibility: hidden; */
 }
 .btn-sign-up-in a{
     text-decoration: none;
@@ -517,6 +522,7 @@ text-decoration: none;
         transition: 0.3s;
         cursor: pointer;
         text-decoration: none;
+        visibility: visible;
     }
     .btn-sign-up-in a{
         text-decoration: none;

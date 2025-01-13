@@ -1,14 +1,19 @@
 const menuBtn = document.getElementById("menu-btn");
 const navLinks = document.getElementById("nav-links");
 const menuBtnIcon = document.getElementById("i");
-
 const dots = document.querySelectorAll('.dot');
+const navBtn = document.querySelectorAll('.nav-btn')
+
+
+
+
+
 
 menuBtn.addEventListener("click", function() {
     navLinks.classList.toggle("open")
 
     const isOpen = navLinks.classList.contains("open");
-    menuBtnIcon.setAttribute("class", isOpen?"ri-close-line" : "ri-menu-list")
+    // menuBtnIcon.setAttribute("class", isOpen?"ri-close-line" : "ri-menu-list")
 });
 
 navLinks.addEventListener("click", function(){
@@ -16,12 +21,21 @@ navLinks.addEventListener("click", function(){
     menuBtnIcon.setAttribute("class", "ri-menu-line")
 })
 
+document.addEventListener("click", () => {
+  
+    // Add click event listener to toggle visibility
+    menuBtn.addEventListener("click", () => {
+      navBtn.classList.toggle('visible');
+    });
+  });
+
+
 
 
 
 
 function navigateTo(url) {
-    window.location.href = url; // Replace with your desired URLs
+    window.location.href = url; 
 }
 
 let valueDisplay = document.querySelectorAll(".num");
