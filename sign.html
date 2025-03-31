@@ -42,12 +42,12 @@
         </div>
         <div class="sign-up-container">
             <h2>Sign Up</h2>
-            <form action="index.html">
+            <form action="registerLogic.php" method="POST">
                 <div class="form-group">
                  <label for="name">Name</label >
                     <input type="text" id="name" name="name" required placeholder="Name">
                      <label for="lastname">Last Name</label>  
-                     <input type="text" id="lastname" name="lastname" required placeholder="Last Name"> 
+                     <input type="text" id="lastname" name="surname" required placeholder="Last Name"> 
                      <label for="username">Username</label>
                      <input type="text" id="username" name="username" required placeholder="Username">
                      <label for="email">Email</label>
@@ -56,20 +56,20 @@
                      <label for="password">Password</label>
                      <div class="password-container">                 
                         <div class="password-input-container">
-                            <input type="password" id="password" class="password-input" placeholder="Enter your password" oninput="checkPassword()">
+                            <input type="password" name="password" id="password" class="password-input" placeholder="Enter your password" oninput="checkPassword()">
                             <i id="togglePassword" class="fas fa-eye toggle-icon"></i>
                         </div>
+                       
 
-                    </div>
-                    <label for="password">Confirm Password</label>
-                    <div class="password-container">
-                        
-                       <div class="password-input-container">
-                           <input type="password" id="password" class="password-input" placeholder="Confirm Password" oninput="checkPassword()">
+                   </div> 
+                        <label for="password">Confirm Password</label>
+                        <div class="password-container">
+                        <div class="password-input-container">
+                           <input type="password" id="password" name="password" class="password-input" placeholder="Confirm Password" oninput="checkPassword()">
                            <i id="togglePassword" class="fas fa-eye toggle-icon"></i>
                        </div>
-
-                   </div>
+                </div>
+                    
         <ul>
             <li id="numberRequirement" class="invalid">Must contain at least one number</li>
             <li id="symbolRequirement" class="invalid">No symbols like @#%^:" are allowed</li>
@@ -78,7 +78,7 @@
                
                 <h4>Already have an account <a href="signinn.html">Sign-in</a></h4>
                
-                <button type="submit" class="btn submit-btn">Sign Up</button>
+                <button type="submit" name="submit" class="btn submit-btn">Sign Up</button>
             </form>
         </div>
     </div>
