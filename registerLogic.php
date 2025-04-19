@@ -14,7 +14,7 @@ if(isset($_POST['submit'])) {
 
     if (empty($name) || empty($surname) || empty($username) || empty($email) || empty($temPass)){
         echo "Please fill all the fields!";
-        header("refresh:3; url=sign.html");
+        header("refresh:3; url=signinn.html");
     } else{
         $sql = "SELECT username FROM users WHERE username=:username";
 
@@ -24,7 +24,7 @@ if(isset($_POST['submit'])) {
 
         if($temSQL->rowCount() > 0){
             echo "Username exists!";
-            header("refresh:3; url=sign.html");
+            header("refresh:3; url=signinn.html");
         } else{
             $sql = "INSERT INTO users(name, surname, username, email, password) VALUES (:name, :surname, :username, :email, :password)";
 
