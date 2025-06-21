@@ -2,6 +2,8 @@
 
 include_once 'config.php';
 
+session_start();
+
 session_destroy();
 
-header("Location: signinn.html");
+header("Location: signinn.php");

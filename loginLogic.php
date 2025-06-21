@@ -1,32 +1,46 @@
 <?php
+session_start();
+
 include_once "config.php";
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    if(empty($username) || empty($password)){
-        echo "Fill all the fields";
-        header("refresh:3; url=signinn.html");
-    }else{
-        $sql = "SELECT * from users WHERE username=:username";
-        $tempSQL = $conn->prepare($sql);
-        $tempSQL->bindParam(":username", $username);
-        $tempSQL->execute();
+    if (empty($username) || empty($password)) {
+        echo "Please fill all the fields";
+    } else {
+        $sql = "SELECT id, emri, email, username, password, role, profile_image FROM users WHERE username=:username";
 
-        if($tempSQL->rowCount() > 0){ 
-            $data=$tempSQL->fetch();
-            
-            if(password_verify($password, $data['password'])){
+        $selectUser = $conn->prepare($sql);
+
+        $selectUser->bindParam(":username", $username);
+
+        $selectUser->execute();
+
+        $data = $selectUser->fetch();
+
+        if ($data == false) {
+            echo "The username does not exist";
+        } else {
+            if (password_verify($password, $data['password'])) {
+                $_SESSION['id'] = $data['id'];
+                $_SESSION['emri'] = $data['emri'];
                 $_SESSION['username'] = $data['username'];
-                header("Location: index.html");
-            } else{
-                echo "Password is incorrect!";
-                header("refresh:3; url=signinn.html");
+                $_SESSION['email'] = $data['email'];
+                $_SESSION['role'] = $data['role'];
+                $_SESSION['profile_image'] = $data['profile_image'];
+                
+                // Redirect based on admin or user
+                if ($data['role']) {
+                    header("Location:   dashboard.php");
+                } else {
+                    header("Location: movies.php");
+                }
+                exit();
+            } else {
+                echo "Password is not valid";
             }
-        }else{
-            echo"User not found!";
         }
-        
     }
 }

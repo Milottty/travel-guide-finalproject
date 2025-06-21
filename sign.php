@@ -1,3 +1,17 @@
+<?php
+session_start();
+$error = $_SESSION['error'] ?? '';
+unset($_SESSION['error']); // clear error after showing
+?>
+                                        
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,44 +56,49 @@
         </div>
         <div class="sign-up-container">
             <h2>Sign Up</h2>
-            <form action="registerLogic.php" method="POST">
-                <div class="form-group">
-                 <label for="name">Name</label >
-                    <input type="text" id="name" name="name" required placeholder="Name">
-                     <label for="lastname">Last Name</label>  
-                     <input type="text" id="lastname" name="surname" required placeholder="Last Name"> 
-                     <label for="username">Username</label>
-                     <input type="text" id="username" name="username" required placeholder="Username">
-                     <label for="email">Email</label>
-                     <input type="email" id="email" name="email" required placeholder="Email">
-                     
-                     <label for="password">Password</label>
-                     <div class="password-container">                 
-                        <div class="password-input-container">
-                            <input type="password" name="password" id="password" class="password-input" placeholder="Enter your password" oninput="checkPassword()">
-                            <i id="togglePassword" class="fas fa-eye toggle-icon"></i>
-                        </div>
-                       
+            <form action="registerLogic.php" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="emri">Name</label>
+        <input type="text" id="emri" name="emri" required placeholder="Name">
 
-                   </div> 
-                        <label for="password">Confirm Password</label>
-                        <div class="password-container">
-                        <div class="password-input-container">
-                           <input type="password" id="password" name="password" class="password-input" placeholder="Confirm Password" oninput="checkPassword()">
-                           <i id="togglePassword" class="fas fa-eye toggle-icon"></i>
-                       </div>
-                </div>
-                    
-        <ul>
-            <li id="numberRequirement" class="invalid">Must contain at least one number</li>
-            <li id="symbolRequirement" class="invalid">No symbols like @#%^:" are allowed</li>
-                    
-                </div>
-               
-                <h4>Already have an account <a href="signinn.html">Sign-in</a></h4>
-               
-                <button type="submit" name="submit" class="btn submit-btn">Sign Up</button>
-            </form>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required placeholder="Username">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="Email">
+
+        <label for="password">Password</label>
+        <div class="password-container">
+            <div class="password-input-container">
+                <input type="password" name="password" id="password" class="password-input" placeholder="Enter your password" oninput="checkPassword()">
+                <i id="togglePassword" class="fas fa-eye toggle-icon"></i>
+            </div>
+        </div>
+
+        <label for="confirm_password">Confirm Password</label>
+        <div class="password-container">
+            <div class="password-input-container">
+                <input type="password" id="confirm_password" name="confirm_password" class="password-input" placeholder="Confirm Password" oninput="checkPassword()">
+                <i id="toggleConfirmPassword" class="fas fa-eye toggle-icon"></i>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Profile Image</label>
+            <input type="file" name="profile_image" class="form-control" accept="image/*" required />
+        </div>
+
+    </div>
+
+    <ul>
+        <li id="numberRequirement" class="invalid">Must contain at least one number</li>
+        <li id="symbolRequirement" class="invalid">No symbols like @#%^:" are allowed</li>
+    </ul>
+
+    <h4>Already have an account <a href="signinn.html">Sign-in</a></h4>
+
+    <button type="submit" name="submit" class="btn submit-btn">Sign Up</button>
+</form> 
         </div>
     </div>
 
