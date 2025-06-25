@@ -1,14 +1,18 @@
 <?php
 session_start();
 include_once "config.php";
-
+include_once "header.php";
 
 if (!isset($_SESSION['username'])) {
-    header("Location: sign.php");
+    header("Location: signinn.php");
     exit();
 }
-?>  
 
+$username = htmlspecialchars($_SESSION['username']);
+$profileImage = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image'])
+    ? htmlspecialchars($_SESSION['profile_image'])
+    : 'img/default.png';
+?>
 
 
 <!DOCTYPE html>
@@ -26,28 +30,90 @@ if (!isset($_SESSION['username'])) {
     rel="stylesheet"/>
     <link rel="icon" href="img/download-removebg-preview.png">
     
+       <style>
+        /* Make sure nav is positioned on top */
+        nav {
+            position: relative;
+            z-index: 9999;
+        }
+
+        .nav-item.dropdown {
+            position: relative;
+            z-index: 9999;
+        }
+
+        /* Style dropdown menu */
+        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark {
+            background-color: #fff !important;
+            color: #000 !important;
+            border: 1px solid #000 !important;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            z-index: 9999 !important;
+        }
+
+        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item {
+            color: #000 !important;
+        }
+
+        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item:hover,
+        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item:focus {
+            background-color: #f0f0f0 !important;
+            color: #000 !important;
+        }
+
+        /* Fix for background sections being above nav */
+        .first-container,
+        .section {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
 
-    <nav>
-        <div class="nav-header">
-            <div class="nav-logo">
-                <a href="#">Lonely <span>Travel</span></a>
-            </div>
-            <div class="nav-menu-btn" id="menu-btn">
-                <span><i class="ri-menu-line"></i></span>
-            </div>
+   
+<nav>
+    <div class="nav-header">
+        <div class="nav-logo">
+            <a href="#">Lonely <span>Travel</span></a>
         </div>
-        <ul class="nav-links" id="nav-links">
-            <li><a href="index.html" class="nav-link">Destinations</a></li>
-            <li><a href="planning.html" class="nav-link">Planning</a></li>
-            <li><a href="shop.html">Shop</a></li>
-        </ul>
-        <div class="nav-btn">
-            <button class="btn-sign-up-in sign-up"><a href="sign.html">Sign Up</a></button>
-            <button class="btn-sign-up-in sign-in"><a href="signinn.html">Sign In</a></button>
+        <div class="nav-menu-btn" id="menu-btn">
+            <span><i class="ri-menu-line"></i></span>
         </div>
-    </nav>
+    </div>
+
+    <ul class="nav-links" id="nav-links">
+        <li><a href="index.php" class="nav-link">Destinations</a></li>
+        <li><a href="planning.php" class="nav-link">Planning</a></li>
+        <li><a href="shop.php" class="nav-link">Shop</a></li>
+    </ul>
+
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+            <a
+                class="nav-link dropdown-toggle d-flex align-items-center text-white"
+                href="#"
+                id="userDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <img src="<?= $profileImage ?>" width="30" height="30" class="rounded-circle me-2" alt="Profile" />
+                <span style="color:#000;"><?= $username ?></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="settings.php">Settings</a></li>
+                <li><a class="dropdown-item" href="user_dashboard.php">Profile</a></li>
+                <li><a class="dropdown-item" href="watchlist.php">WatchList</a></li>
+                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                    <li><a class="dropdown-item text-primary" href="dashboard.php">Dashboard</a></li>
+                <?php endif; ?>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                    <a class="dropdown-item text-danger" href="logout.php" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
 
     <div class="articles-container">
         <article class="article-card">
@@ -156,5 +222,8 @@ if (!isset($_SESSION['username'])) {
 
 
     <script src="js/main.js"></script>
+    <!-- Bootstrap JS (with Popper.js included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-Qw3WjDsmzmqKjGVK3QCSHgk3Jz9XQljBR1VpKtZKeKytmevZKls+bA5flKn1b3gL" crossorigin="anonymous"></script>
+
 </body>
 </html>

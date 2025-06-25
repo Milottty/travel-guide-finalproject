@@ -55,9 +55,9 @@
                         </div>
                     </div>
 
-                        <h6><a href="password.html">Forgot your password?</a></h6>
+                        <h6><a href="password.php">Forgot your password?</a></h6>
 
-                <h4>Dont have an account <a href="sign.html">"Sign Up"</a></h4>
+                <h4>Dont have an account <a href="sign.php">"Sign Up"</a></h4>
                
                 <button type="submit" name="submit" class="btn submit-btn">Sign Up</button>
             </form>

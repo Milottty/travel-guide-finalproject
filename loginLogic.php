@@ -33,9 +33,9 @@ if (isset($_POST['submit'])) {
                 
                 // Redirect based on admin or user
                 if ($data['role']) {
-                    header("Location:   dashboard.php");
+                    header("Location: dashboard.php");
                 } else {
-                    header("Location: movies.php");
+                    header("Location: index.php");
                 }
                 exit();
             } else {

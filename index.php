@@ -30,6 +30,46 @@ $profileImage = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_i
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="icon" href="img/download-removebg-preview.png" />
+
+<style>
+    /* Make sure nav is positioned on top */
+    nav {
+        position: relative;
+        z-index: 9999;
+    }
+
+    .nav-item.dropdown {
+        position: relative;
+        z-index: 9999;
+    }
+
+    /* Style dropdown menu */
+    .dropdown-menu.dropdown-menu-end.dropdown-menu-dark {
+        background-color: #fff !important;
+        color: #000 !important;
+        border: 1px solid #000 !important;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        z-index: 9999 !important;
+    }
+
+    .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item {
+        color: #000 !important;
+    }
+
+    .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item:hover,
+    .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item:focus {
+        background-color: #f0f0f0 !important;
+        color: #000 !important;
+    }
+
+    /* Fix for background sections being above nav */
+    .first-container,
+    .section {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+
 </head>
 
 <body>
@@ -58,20 +98,18 @@ $profileImage = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_i
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <img src="<?= $profileImage ?>" width="30" height="30" class="rounded-circle me-2" alt="Profile" />
-                    <span><?= $username ?></span>
+                    <span style="color: #000;"><?= $username ?></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userDropdown">
                     <li><a class="dropdown-item" href="settings.php">Settings</a></li>
                     <li><a class="dropdown-item" href="user_dashboard.php">Profile</a></li>
                     <li><a class="dropdown-item" href="watchlist.php">WatchList</a></li>
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                        <li><a class="dropdown-item text-primary" href="dashboard.php">Dashboard</a></li>
+                    <?php endif; ?>
+                    <li><hr class="dropdown-divider" /></li>
                     <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li>
-                        <a
-                            class="dropdown-item"
-                            href="logout.php"
-                            onclick="return confirm('Are you sure you want to logout?')">Logout</a>
+                        <a class="dropdown-item text-danger" href="logout.php" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
                     </li>
                 </ul>
             </li>
@@ -82,16 +120,19 @@ $profileImage = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_i
 
     <div class="first-container">
         <h1 class="main-h1">Discover story-worthy travel moments</h1>
+
         <div class="section" style="background-image: url('img/GettyImages-1061872058.avif');" onclick="navigateTo('getty.php')">
             <div class="content">
                 <h2 class="h2-text2">How to spend a perfect weekend in Porto</h2>
             </div>
         </div>
+
         <div class="section" style="background-image: url('img/shutterstock1636820080.avif');" onclick="navigateTo('train.php')">
             <div class="content">
                 <h2 class="h2-text2 h2-text111">11 bucket-list Big Sur beaches</h2>
             </div>
         </div>
+
         <div class="section" style="background-image: url('img/Los-Angeles.avif');" onclick="navigateTo('uk.php')">
             <div class="content">
                 <h2 class="h2-text2">A first-time guide to the Galápagos Islands</h2>
@@ -102,7 +143,6 @@ $profileImage = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_i
     <h1 class="h1-text">RECOMMENDED DESTINATIONS​</h1>
     <p class="p-text">Find out more about destinations that take care of their place and their local community. Here’s four great examples:</p>
     <div class="grid-container">
-        <!-- Cards go here, unchanged -->
         <div class="card">
             <img src="img/study-in-london.jpg" class="London" alt="London" />
             <div class="card-content">
