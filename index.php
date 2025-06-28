@@ -200,7 +200,7 @@ if ($userId) {
     <div class="container">
         <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
             <?php foreach ($destinations as $dest):
-                $image = !empty($dest['place_image']) ? 'img/' . htmlspecialchars($dest['place_image']) : 'img/default.png';
+                $image = !empty($dest['image']) ? '' . htmlspecialchars($dest['image']) : 'img/default.png';
             ?>
             <div class="col">
                 <div class="card h-100 shadow-sm">

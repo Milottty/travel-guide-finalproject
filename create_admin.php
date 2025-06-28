@@ -1,7 +1,7 @@
 <?php
 include_once "config.php";
 
-$username = 'admin';
+$username = 'admin1';
 $email = 'admin@gmail.com';
 $password = password_hash('admin123', PASSWORD_DEFAULT);
 $role = 'admin';

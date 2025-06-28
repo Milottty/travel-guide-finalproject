@@ -293,3 +293,152 @@ ALTER TABLE orders
   ADD COLUMN total DECIMAL(10,2) GENERATED ALWAYS AS (price * quantity) STORED;
 
 DESCRIBE orders;
+
+
+ALTER TABLE places ADD COLUMN image VARCHAR(255) NULL;
+
+SHOW COLUMNS FROM places;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- USERS TABLE
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    emri VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'user') DEFAULT 'user',
+    profile_image VARCHAR(255) DEFAULT 'img/default.png',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- PLACES TABLE
+CREATE TABLE IF NOT EXISTS places (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    place_name VARCHAR(255) NOT NULL,
+    place_desc VARCHAR(255) NOT NULL,
+    place_image VARCHAR(255) NOT NULL,
+    visitors INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL DEFAULT 0
+);
+
+-- DESTINATIONS TABLE
+CREATE TABLE IF NOT EXISTS destinations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),
+    location VARCHAR(255),
+    description TEXT,
+    image VARCHAR(255)
+);
+
+-- PRODUCTS TABLE
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    image VARCHAR(255) NOT NULL
+);
+
+-- BOOKINGS TABLE (for places)
+CREATE TABLE IF NOT EXISTS booking (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    place_id INT NOT NULL,
+    nr_tickets INT NOT NULL,
+    date DATE NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE
+);
+
+-- DESTINATION BOOKINGS
+CREATE TABLE IF NOT EXISTS bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    destination_id INT NOT NULL,
+    booking_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (destination_id) REFERENCES destinations(id)
+);
+
+-- CART TABLE
+CREATE TABLE IF NOT EXISTS cart (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL DEFAULT 1,
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+-- ORDERS TABLE
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    total DECIMAL(10,2) GENERATED ALWAYS AS (price * quantity) STORED,
+    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+-- WATCHLIST TABLE
+CREATE TABLE IF NOT EXISTS watchlist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    item_type ENUM('destination', 'product') NOT NULL,
+    item_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_watch (user_id, item_type, item_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- USER_DESTINATIONS TABLE
+CREATE TABLE IF NOT EXISTS user_destinations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    destination_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (destination_id) REFERENCES destinations(id) ON DELETE CASCADE
+);
+
+
+
+INSERT INTO products (name, description, price, image) VALUES
+('Classic Guidebook - Rome', 'Most comprehensive guide for Rome', 150.00, 'img/Rome.avif'),
+('Experience Guidebook - Tokyo', 'Authentic local experiences in Tokyo', 200.00, 'img/Tokyo.jpg'),
+('Pocket Guidebook - Paris', 'Top highlights for Paris in a handy size', 120.00, 'img/Parking-paris.webp');
+
+
+
+
+SELECT o.id, u.username, p.place_name, o.nr_tickets, o.date
+FROM booking o
+JOIN users u ON o.user_id = u.id
+JOIN places p ON o.place_id = p.id
+ORDER BY o.date DESC;
+
+
+
+
+INSERT INTO users (emri, username, email, password, role, profile_image)
+VALUES ('Admin User', 'admin', 'admin@example.com', 'admin123', 'admin', 'img/default.png');
