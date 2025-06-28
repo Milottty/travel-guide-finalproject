@@ -1,22 +1,25 @@
 <?php
 include_once "config.php";
 
-$adminUsername = 'admin';
-$adminEmail = 'admin@gmail.com';
-$adminPassword = password_hash('admin123', PASSWORD_DEFAULT);
-$adminRole = 'admin';
+$username = 'admin';
+$email = 'admin@gmail.com';
+$password = password_hash('admin123', PASSWORD_DEFAULT);
+$role = 'admin';
+$image = 'img/default.png';
 
-// Check if admin exists
-$stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-$stmt->execute([$adminUsername]);
-if ($stmt->rowCount() == 1) {
-    echo "Admin user already exists.";
+$stmt = $conn->prepare("INSERT INTO users (emri, username, email, password, role, profile_image)
+                        VALUES ('Admin', :username, :email, :password, :role, :image)");
+
+$success = $stmt->execute([
+    ':username' => $username,
+    ':email' => $email,
+    ':password' => $password,
+    ':role' => $role,
+    ':image' => $image
+]);
+
+if ($success) {
+    echo "✅ Admin user created";
 } else {
-    // Removed 'is_admin'
-    $insert = $conn->prepare("INSERT INTO users (username, email, password, role, profile_image) VALUES (?, ?, ?, ?, ?)");
-    if ($insert->execute([$adminUsername, $adminEmail, $adminPassword, $adminRole, 'default.png'])) {
-        echo "Admin user created successfully.";
-    } else {
-        echo "Failed to create admin user.";
-    }
+    echo "❌ Failed to create admin";
 }

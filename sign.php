@@ -1,113 +1,155 @@
 <?php
 session_start();
-$error = $_SESSION['error'] ?? '';
-unset($_SESSION['error']); // clear error after showing
+
+
+// start session if not started yet
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// include navbar
+include 'navbar.php';
+
+
+
+
+include_once "config.php";
+
+$errors = [];
+$success = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Trim inputs
+    $emri = trim($_POST['emri'] ?? '');
+    $username = trim($_POST['username'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+
+    // Validate inputs
+    if (!$emri) $errors[] = "Name is required.";
+    if (!$username) $errors[] = "Username is required.";
+    if (!$email) $errors[] = "Email is required.";
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Invalid email format.";
+    if (!$password) $errors[] = "Password is required.";
+    if ($password !== $confirm_password) $errors[] = "Passwords do not match.";
+
+    // Check if username or email already exist
+    if (empty($errors)) {
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE username = :username OR email = :email");
+        $stmt->execute([':username' => $username, ':email' => $email]);
+        if ($stmt->fetchColumn() > 0) {
+            $errors[] = "Username or email already taken.";
+        }
+    }
+
+    // Handle profile image upload (optional)
+    $profileImagePath = 'img/default.png'; // Default image
+    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        $fileType = mime_content_type($_FILES['profile_image']['tmp_name']);
+        if (!in_array($fileType, $allowedTypes)) {
+            $errors[] = "Only JPG, PNG, GIF, or WEBP images are allowed.";
+        } else {
+            $targetDir = "uploads/";
+            if (!is_dir($targetDir)) mkdir($targetDir, 0755, true);
+            $fileName = time() . "_" . basename($_FILES["profile_image"]["name"]);
+            $targetFilePath = $targetDir . $fileName;
+            if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFilePath)) {
+                $profileImagePath = $targetFilePath;
+            } else {
+                $errors[] = "Failed to upload profile image.";
+            }
+        }
+    }
+
+    // Insert user if no errors
+    if (empty($errors)) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $role = 'user';
+
+        $insert = $conn->prepare("INSERT INTO users (emri, username, email, password, role, profile_image) 
+                                  VALUES (:emri, :username, :email, :password, :role, :profile_image)");
+
+        $success = $insert->execute([
+            ':emri' => $emri,
+            ':username' => $username,
+            ':email' => $email,
+            ':password' => $hashedPassword,
+            ':role' => $role,
+            ':profile_image' => $profileImagePath
+        ]);
+
+        if ($success) {
+            header("Location: signinn.php?registered=1");
+            exit();
+        } else {
+            $errors[] = "Registration failed. Please try again.";
+        }
+    }
+}
 ?>
-                                        
-
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lonely Travel </title>
-    <link rel="stylesheet" href="css/sign.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alatsi&family=Bebas+Neue&family=Miniver&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="icon" href="img/download-removebg-preview.png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register - Lonely Travel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 </head>
-<body>
-    <nav>
-        <div class="nav-header">
-            <div class="nav-logo">
-                <a href="#">Lonely <span>Travel</span></a>
-            </div>
-            <div class="nav-menu-btn" id="menu-btn">
-                <span><i class="ri-menu-line"></i></span>
-            </div>
-        </div>
-        <ul class="nav-links" id="nav-links">
-            <li><a href="index.html" class="nav-link">Destinations</a></li>
-            <li><a href="planning.html" class="nav-link">Planning</a></li>
-            <li><a href="shop.html" class="nav-link">Shop</a></li>
-        </ul>
-        <div class="nav-btn">
-            <button class="btn sign-up"><a href="sign.html">Sign Up</a></button>
-            <button class="btn sign-in"><a href="signinn.html">Sign In</a></button>
-        </div>
-    </nav>
-    
-    <div class="div-container">
-        <div class="div-img">
-            <img src="img/GettyImages-1061872058.avif" alt="">
-        </div>
-        <div class="sign-up-container">
-            <h2>Sign Up</h2>
-            <form action="registerLogic.php" method="POST" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="emri">Name</label>
-        <input type="text" id="emri" name="emri" required placeholder="Name">
+<body class="bg-light">
 
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" required placeholder="Username">
+<div class="container mt-5" style="max-width: 500px;">
+    <h2 class="mb-4 text-center">Create an Account</h2>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required placeholder="Email">
+    <?php if (!empty($errors)): ?>
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                <?php foreach ($errors as $error): ?>
+                    <li><?= htmlspecialchars($error) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
 
-        <label for="password">Password</label>
-        <div class="password-container">
-            <div class="password-input-container">
-                <input type="password" name="password" id="password" class="password-input" placeholder="Enter your password" oninput="checkPassword()">
-                <i id="togglePassword" class="fas fa-eye toggle-icon"></i>
-            </div>
+    <form method="post" enctype="multipart/form-data" novalidate>
+        <div class="mb-3">
+            <label for="emri" class="form-label">Name</label>
+            <input type="text" name="emri" id="emri" class="form-control" value="<?= htmlspecialchars($_POST['emri'] ?? '') ?>" required />
         </div>
 
-        <label for="confirm_password">Confirm Password</label>
-        <div class="password-container">
-            <div class="password-input-container">
-                <input type="password" id="confirm_password" name="confirm_password" class="password-input" placeholder="Confirm Password" oninput="checkPassword()">
-                <i id="toggleConfirmPassword" class="fas fa-eye toggle-icon"></i>
-            </div>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" id="username" class="form-control" value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" required />
         </div>
 
-        <div class="mb-4">
-            <label class="form-label">Profile Image</label>
-            <input type="file" name="profile_image" class="form-control" accept="image/*" required />
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" name="email" id="email" class="form-control" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required />
         </div>
 
-    </div>
-
-    <ul>
-        <li id="numberRequirement" class="invalid">Must contain at least one number</li>
-        <li id="symbolRequirement" class="invalid">No symbols like @#%^:" are allowed</li>
-    </ul>
-
-    <h4>Already have an account <a href="signinn.html">Sign-in</a></h4>
-
-    <button type="submit" name="submit" class="btn submit-btn">Sign Up</button>
-</form> 
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" id="password" class="form-control" required />
         </div>
-    </div>
 
+        <div class="mb-3">
+            <label for="confirm_password" class="form-label">Confirm Password</label>
+            <input type="password" name="confirm_password" id="confirm_password" class="form-control" required />
+        </div>
 
-  
+        <div class="mb-3">
+            <label for="profile_image" class="form-label">Profile Image (optional)</label>
+            <input type="file" name="profile_image" id="profile_image" class="form-control" accept="image/*" />
+        </div>
 
-    
-    <script> window.chtlConfig = { chatbotId: "1162981525" } </script>
-    <script async data-id="1162981525" id="chatling-embed-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>  
-    <script src="js/sign.js"></script>
+        <button type="submit" class="btn btn-primary w-100">Register</button>
+    </form>
+
+    <p class="text-center mt-3">Already have an account? <a href="signinn.php">Sign In</a></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

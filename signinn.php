@@ -1,73 +1,98 @@
+<?php
+session_start();
+include_once "config.php";
+
+$error = '';
+
+// Process login form
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if (!$username || !$password) {
+        $error = "Please fill in all fields.";
+    } else {
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username = :username");
+        $stmt->execute([':username' => $username]);
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($password, $user['password'])) {
+            // Login successful
+            $_SESSION['id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
+            $_SESSION['profile_image'] = $user['profile_image'] ?? 'img/default.png';
+
+            // Redirect
+            header("Location: index.php");
+            exit();
+        } else {
+            $error = "Invalid username or password.";
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lonely Travel </title>
-    <link rel="stylesheet" href="css/sign.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alatsi&family=Bebas+Neue&family=Miniver&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="icon" href="img/download-removebg-preview.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Lonely Travel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="icon" href="img/download-removebg-preview.png" />
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+    .login-container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .login-container h2 {
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 700;
+      color: #0d6efd;
+    }
+    .btn-primary {
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-header">
-            <div class="nav-logo">
-                <a href="#">Lonely <span>Travel</span></a>
-            </div>
-            <div class="nav-menu-btn" id="menu-btn">
-                <span><i class="ri-menu-line"></i></span>
-            </div>
-        </div>
-        <ul class="nav-links" id="nav-links">
-            <li><a href="index.html" class="nav-link">Destinations</a></li>
-            <li><a href="planning.html" class="nav-link">Planning</a></li>
-            <li><a href="shop.html" class="nav-link">Shop</a></li>
-        </ul>
-        <div class="nav-btn">
-            <button class="btn sign-up"><a href="sign.html">Sign Up</a></button>
-            <button class="btn sign-in"><a href="signinn.html">Sign In</a></button>
-        </div>
-    </nav>
-    
-    <div class="div-container">
-        <div class="div-img">
-            <img src="img/GettyImages-1061872058.avif" alt="">
-        </div>
-        <div class="sign-up-container">
-            <h2>Sign In</h2>
-            <form action="loginLogic.php" method="POST">
-                <div class="form-group">
-                     <label for="username">Username</label>
-                     <input type="text" id="username" name="username" placeholder="Username">
-                     <label for="password">Password</label>
 
-                     <div class="password-container">   
-                        <div class="password-input-container">
-                            <input type="password" name="password" id="password" class="password-input" placeholder="Enter your password">
-                            <i id="togglePassword" class="fas fa-eye toggle-icon"></i>
-                        </div>
-                    </div>
+<div class="login-container">
+  <h2>Sign In</h2>
 
-                        <h6><a href="password.php">Forgot your password?</a></h6>
+  <?php if (!empty($error)): ?>
+    <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+  <?php endif; ?>
 
-                <h4>Dont have an account <a href="sign.php">"Sign Up"</a></h4>
-               
-                <button type="submit" name="submit" class="btn submit-btn">Sign Up</button>
-            </form>
-        </div>
+  <form method="post">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" name="username" class="form-control" id="username" required autofocus>
     </div>
 
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" name="password" class="form-control" id="password" required>
+    </div>
 
-    
-    <script> window.chtlConfig = { chatbotId: "1162981525" } </script>
-    <script async data-id="1162981525" id="chatling-embed-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>  
-    <script src="js/sign.js"></script>
+    <button type="submit" class="btn btn-primary w-100">Login</button>
+  </form>
+
+  <div class="text-center mt-3">
+    <p>Don't have an account? <a href="sign.php">Register here</a></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

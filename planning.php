@@ -1,229 +1,205 @@
 <?php
 session_start();
 include_once "config.php";
-include_once "header.php";
 
+// Redirect if not logged in
 if (!isset($_SESSION['username'])) {
     header("Location: signinn.php");
     exit();
 }
 
 $username = htmlspecialchars($_SESSION['username']);
-$profileImage = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image'])
-    ? htmlspecialchars($_SESSION['profile_image'])
-    : 'img/default.png';
+$profileImage = !empty($_SESSION['profile_image']) ? htmlspecialchars($_SESSION['profile_image']) : 'img/default.png';
+$role = $_SESSION['role'] ?? 'user';
+
+// Prices per destination
+$prices = [
+    'Rome' => 150,
+    'Tokyo' => 200,
+    'Paris' => 120,
+];
+
+// Grab and clear messages from session
+$successMsg = $_SESSION['success'] ?? '';
+$errorMsg = $_SESSION['error'] ?? '';
+unset($_SESSION['success'], $_SESSION['error']);
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lonely Travel </title>
-    <link rel="stylesheet" href="css/planning.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alatsi&family=Bebas+Neue&family=Miniver&display=swap" rel="stylesheet">
-    <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"/>
-    <link rel="icon" href="img/download-removebg-preview.png">
-    
-       <style>
-        /* Make sure nav is positioned on top */
-        nav {
-            position: relative;
-            z-index: 9999;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Planning - Lonely Travel</title>
 
-        .nav-item.dropdown {
-            position: relative;
-            z-index: 9999;
-        }
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-        /* Style dropdown menu */
-        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark {
-            background-color: #fff !important;
-            color: #000 !important;
-            border: 1px solid #000 !important;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            z-index: 9999 !important;
-        }
+  <link rel="icon" href="img/download-removebg-preview.png" />
 
-        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item {
-            color: #000 !important;
-        }
-
-        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item:hover,
-        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item:focus {
-            background-color: #f0f0f0 !important;
-            color: #000 !important;
-        }
-
-        /* Fix for background sections being above nav */
-        .first-container,
-        .section {
-            position: relative;
-            z-index: 1;
-        }
-    </style>
+  <style>
+    .navbar-brand span {
+      color: #000080;
+    }
+    .card img {
+      object-fit: cover;
+      height: 200px;
+    }
+    .badge-price {
+      font-size: 0.9rem;
+    }
+    .form-label {
+      font-size: 0.85rem;
+      margin-bottom: 0.2rem;
+    }
+  </style>
 </head>
-<body>
+<body class="bg-light">
 
-   
-<nav>
-    <div class="nav-header">
-        <div class="nav-logo">
-            <a href="#">Lonely <span>Travel</span></a>
-        </div>
-        <div class="nav-menu-btn" id="menu-btn">
-            <span><i class="ri-menu-line"></i></span>
-        </div>
-    </div>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm py-2 px-3">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-primary" href="index.php">
+      Lonely <span>Travel</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <ul class="nav-links" id="nav-links">
-        <li><a href="index.php" class="nav-link">Destinations</a></li>
-        <li><a href="planning.php" class="nav-link">Planning</a></li>
-        <li><a href="shop.php" class="nav-link">Shop</a></li>
-    </ul>
-
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.php">Destinations</a></li>
+        <li class="nav-item"><a class="nav-link active" href="planning.php">Planning</a></li>
+        <li class="nav-item"><a class="nav-link" href="shop.php">Shop</a></li>
+        <?php if ($role === 'admin'): ?>
+          <li class="nav-item"><a class="nav-link text-primary" href="dashboard.php">Admin Dashboard</a></li>
+        <?php endif; ?>
+      </ul>
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item dropdown">
-            <a
-                class="nav-link dropdown-toggle d-flex align-items-center text-white"
-                href="#"
-                id="userDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <img src="<?= $profileImage ?>" width="30" height="30" class="rounded-circle me-2" alt="Profile" />
-                <span style="color:#000;"><?= $username ?></span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="settings.php">Settings</a></li>
-                <li><a class="dropdown-item" href="user_dashboard.php">Profile</a></li>
-                <li><a class="dropdown-item" href="watchlist.php">WatchList</a></li>
-                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                    <li><a class="dropdown-item text-primary" href="dashboard.php">Dashboard</a></li>
-                <?php endif; ?>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                    <a class="dropdown-item text-danger" href="logout.php" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
-                </li>
-            </ul>
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="<?= $profileImage ?>" alt="Profile" class="rounded-circle me-2" width="30" height="30" />
+            <?= $username ?>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="settings.php">Settings</a></li>
+            <li><a class="dropdown-item" href="user_dashboard.php">Profile</a></li>
+            <li><a class="dropdown-item" href="watchlist.php">WatchList</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="logout.php" onclick="return confirm('Logout?')">Logout</a></li>
+          </ul>
         </li>
-    </ul>
+      </ul>
+    </div>
+  </div>
 </nav>
 
-    <div class="articles-container">
-        <article class="article-card">
-            <img src="img/study-in-london.jpg" alt="England" class="article-image">
-            <div class="article-content">
-                <p class="article-category">Destination Practicalities</p>
-                <h2 class="article-title">21 local tips to know before traveling to England</h2>
-                <p class="article-meta">Nov 21, 2024 • 9 min read</p>
-                <p class="article-description">From getting the best transportation prices to following local rules for queueing, you need to know these key practicalities before you visit England.</p>
-                <a href="shop.html" class="card-btn" onclick="window.location.href='shop.html'">Click Here</a>
-            </div>
-        </article>
+<div class="container my-5">
+  <h1 class="text-center fw-bold mb-4">Plan Your Perfect Trip</h1>
+  <p class="text-center text-muted mb-5">Pick dates and see when it's cheaper! Choose number of tickets and book easily.</p>
 
-        <article class="article-card">
-            <img src="img/Manhattan.jpg" alt="Manhattan" class="article-image">
-            <div class="article-content">
-                <p class="article-category">Destination Practicalities</p>
-                <h2 class="article-title">The ultimate holiday season weekend in Manhattan</h2>
-                <p class="article-meta">Nov 21, 2024 • 7 min read</p>
-                <p class="article-description">Once December rolls around, New York City is a magical place to spend a winter weekend.</p>
-                <a href="shop.html" class="card-btn" onclick="window.location.href='shop.html'">Click Here</a>
-            </div>
-        </article>
+  <!-- Display messages -->
+  <?php if ($successMsg): ?>
+    <div class="alert alert-success"><?= htmlspecialchars($successMsg) ?></div>
+  <?php endif; ?>
+  <?php if ($errorMsg): ?>
+    <div class="alert alert-danger"><?= htmlspecialchars($errorMsg) ?></div>
+  <?php endif; ?>
 
-        <article class="article-card">
-            <img src="img/death-valley.webp" alt="Death Valley" class="article-image">
-            <div class="article-content">
-                <p class="article-category">Destination Practicalities</p>
-                <h2 class="article-title">A first-time guide to Death Valley National Park</h2>
-                <p class="article-meta">Nov 21, 2024 • 4 min read</p>
-                <p class="article-description">Welcome to Death Valley, where the landscapes are as extreme as the name suggests.</p>
-                <a href="shop.html" class="card-btn" onclick="window.location.href='shop.html'">Click Here</a>
-            </div>
-        </article>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
 
-        <article class="article-card">
-            <img src="img/Chattanooga-Featured.png" alt="Chattanooga" class="article-image">
-            <div class="article-content">
-                <p class="article-category">Wildlife and Nature</p>
-                <h2 class="article-title">The 19 best free things to do in Chattanooga</h2>
-                <p class="article-meta">Nov 21, 2024 • 9 min read</p>
-                <p class="article-description">All aboard the budget-friendly express train to Chattanooga! Enjoy a cut-price vacation with our insider tips on the best free things to do in Scenic City.</p>
-                <a href="shop.html" class="card-btn" onclick="window.location.href='shop.html'">Click Here</a>
+    <!-- Rome Card -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="img/Rome.avif" class="card-img-top" alt="Rome">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="card-title mb-0">Rome, Italy</h5>
+            <span class="badge bg-success badge-price">$<?= $prices['Rome'] ?></span>
+          </div>
+          <p class="text-muted small mb-3">Cheapest next date: <strong>2025-07-10</strong></p>
+          <form method="post" action="purchase.php" class="mt-auto">
+            <input type="hidden" name="destination" value="Rome" />
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label" for="rome_date">Date</label>
+                <input id="rome_date" name="travel_date" type="date" class="form-control form-control-sm" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label" for="rome_tickets">Tickets</label>
+                <input id="rome_tickets" name="tickets" type="number" class="form-control form-control-sm" min="1" value="1" required>
+              </div>
             </div>
-        </article>
-
-        <article class="article-card">
-            <img src="img/bali.jpg" alt="Bali" class="article-image">
-            <div class="article-content">
-                <p class="article-category">Culture and Traditions</p>
-                <h2 class="article-title">Exploring Bali: A Journey Through Culture and Beauty</h2>
-                <p class="article-meta">Dec 1, 2024 • 8 min read</p>
-                <p class="article-description">Discover the rich cultural heritage and breathtaking scenery of Bali, from its temples to its scenic rice terraces.</p>
-                <a href="shop.html" class="card-btn" onclick="window.location.href='shop.html'">Click Here</a>
-            </div>
-        </article>
-
-        <article class="article-card">
-            <img src="img/santorini.jpg" alt="Santorini" class="article-image">
-            <div class="article-content">
-                <p class="article-category">Romantic Getaways</p>
-                <h2 class="article-title">Why Santorini Should Be Your Next Romantic Getaway</h2>
-                <p class="article-meta">Dec 5, 2024 • 6 min read</p>
-                <p class="article-description">Santorini, with its iconic blue domes and stunning sunsets, is perfect for couples seeking an unforgettable vacation.</p>
-                <a href="shop.html" class="card-btn" onclick="window.location.href='shop.html'">Click Here</a>
-            </div>
-        </article>
-    
-        <article class="article-card">
-            <img src="img/paris.jpg" alt="Paris" class="article-image">
-            <div class="article-content">
-                <p class="article-category">Romantic Getaways</p>
-                <h2 class="article-title">Top 10 Romantic Activities in Paris</h2>
-                <p class="article-meta">Dec 7, 2024 • 6 min read</p>
-                <p class="article-description">Find out why Paris is the ultimate destination for couples looking for romance and adventure.</p>
-                <a href="shop.html" class="card-btn" onclick="window.location.href='shop.html'">Click Here</a>
-            </div>
-        </article>
-
-        <article class="article-card">
-            <img src="img/tokyo.jpg" alt="Tokyo" class="article-image">
-            <div class="article-content">
-                <p class="article-category">Cultural Insights</p>
-                <h2 class="article-title">Exploring Tokyo: A Blend of Tradition and Modernity</h2>
-                <p class="article-meta">Dec 7, 2024 • 8 min read</p>
-                <p class="article-description">Experience the unique mix of ancient temples and futuristic cityscapes in Tokyo.</p>
-                <a href="shop.html" class="card-btn" onclick="window.location.href='shop.html'">Click Here</a>
-            </div>
-        </article>
-    
-        <article class="article-card">
-            <img src="img/napoli.jpg" alt="Italy" class="article-image">
-            <div class="article-content">
-                <p class="article-category">Food and Travel</p>
-                <h2 class="article-title">A Culinary Journey Through Italy</h2>
-                <p class="article-meta">Dec 7, 2024 • 7 min read</p>
-                <p class="article-description">From the pizza of Naples to the pasta of Bologna, discover Italy’s rich culinary landscape.</p>
-                <a href="shop.html" class="card-btn" onclick="window.location.href='shop.html'">Click Here</a>
-            </div>
-        </article>
+            <button type="submit" class="btn btn-primary w-100">Book Now</button>
+          </form>
+        </div>
+      </div>
     </div>
 
+    <!-- Tokyo Card -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="img/Tokyo.jpg" class="card-img-top" alt="Tokyo">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="card-title mb-0">Tokyo, Japan</h5>
+            <span class="badge bg-success badge-price">$<?= $prices['Tokyo'] ?></span>
+          </div>
+          <p class="text-muted small mb-3">Cheapest next date: <strong>2025-08-05</strong></p>
+          <form method="post" action="purchase.php" class="mt-auto">
+            <input type="hidden" name="destination" value="Tokyo" />
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label" for="tokyo_date">Date</label>
+                <input id="tokyo_date" name="travel_date" type="date" class="form-control form-control-sm" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label" for="tokyo_tickets">Tickets</label>
+                <input id="tokyo_tickets" name="tickets" type="number" class="form-control form-control-sm" min="1" value="1" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Book Now</button>
+          </form>
+        </div>
+      </div>
+    </div>
 
-    <script> window.chtlConfig = { chatbotId: "1162981525" } </script>
-    <script async data-id="1162981525" id="chatling-embed-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>  
+    <!-- Paris Card -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="img/Parking-paris.webp" class="card-img-top" alt="Paris">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="card-title mb-0">Paris, France</h5>
+            <span class="badge bg-success badge-price">$<?= $prices['Paris'] ?></span>
+          </div>
+          <p class="text-muted small mb-3">Cheapest next date: <strong>2025-07-20</strong></p>
+          <form method="post" action="purchase.php" class="mt-auto">
+            <input type="hidden" name="destination" value="Paris" />
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label" for="paris_date">Date</label>
+                <input id="paris_date" name="travel_date" type="date" class="form-control form-control-sm" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label" for="paris_tickets">Tickets</label>
+                <input id="paris_tickets" name="tickets" type="number" class="form-control form-control-sm" min="1" value="1" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Book Now</button>
+          </form>
+        </div>
+      </div>
+    </div>
 
+  </div>
+</div>
 
-    <script src="js/main.js"></script>
-    <!-- Bootstrap JS (with Popper.js included) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-Qw3WjDsmzmqKjGVK3QCSHgk3Jz9XQljBR1VpKtZKeKytmevZKls+bA5flKn1b3gL" crossorigin="anonymous"></script>
+<footer class="bg-white text-center py-3 border-top mt-5">
+  <p class="mb-0 text-muted">© 2025 Lonely Travel. All rights reserved.</p>
+</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -64,5 +64,7 @@
     <script> window.chtlConfig = { chatbotId: "1162981525" } </script>
     <script async data-id="1162981525" id="chatling-embed-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
     <script src="js/sign.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

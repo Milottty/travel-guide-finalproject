@@ -1,220 +1,224 @@
 <?php
 session_start();
 include_once "config.php";
-include_once "header.php";
 
-if (!isset($_SESSION['username'])) {
-    header("Location: signinn.php");
+// Check if user is logged in
+$username = $_SESSION['username'] ?? 'Guest';
+$userId = $_SESSION['id'] ?? 0;
+$profileImage = $_SESSION['profile_image'] ?? 'img/default.png';
+
+// Handle Add to Cart
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_to_cart') {
+    $productId = intval($_POST['product_id']);
+    $quantity = intval($_POST['quantity'] ?? 1);
+
+    if ($userId) {
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM cart WHERE user_id = ? AND product_id = ?");
+        $stmt->execute([$userId, $productId]);
+        $exists = $stmt->fetchColumn();
+
+        if ($exists) {
+            $stmt = $conn->prepare("UPDATE cart SET quantity = quantity + ? WHERE user_id = ? AND product_id = ?");
+            $stmt->execute([$quantity, $userId, $productId]);
+        } else {
+            $stmt = $conn->prepare("INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)");
+            $stmt->execute([$userId, $productId, $quantity]);
+        }
+
+        $_SESSION['success'] = "Product added to cart!";
+    } else {
+        $_SESSION['error'] = "Please login to add to cart.";
+    }
+
+    header("Location: shop.php");
     exit();
 }
 
-$username = htmlspecialchars($_SESSION['username']);
-$profileImage = isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image'])
-    ? htmlspecialchars($_SESSION['profile_image'])
-    : 'img/default.png';
+// Handle Buy Now (direct order)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'buy_now') {
+    $productId = intval($_POST['product_id']);
+    $quantity = intval($_POST['quantity'] ?? 1);
+
+    if ($userId) {
+        $stmt = $conn->prepare("INSERT INTO orders (user_id, product_id, quantity) VALUES (?, ?, ?)");
+        $stmt->execute([$userId, $productId, $quantity]);
+
+        $_SESSION['success'] = "Purchase successful!";
+    } else {
+        $_SESSION['error'] = "Please login to buy.";
+    }
+
+    header("Location: shop.php");
+    exit();
+}
+
+// Fetch products
+try {
+    $stmt = $conn->query("SELECT * FROM products");
+    $products = $stmt->fetchAll();
+} catch (PDOException $e) {
+    die("Error loading products: " . $e->getMessage());
+}
+
+// Fetch cart count
+$cartCount = 0;
+if ($userId) {
+    $stmt = $conn->prepare("SELECT SUM(quantity) FROM cart WHERE user_id = ?");
+    $stmt->execute([$userId]);
+    $cartCount = $stmt->fetchColumn() ?: 0;
+}
+
+// Messages
+$successMsg = $_SESSION['success'] ?? '';
+$errorMsg = $_SESSION['error'] ?? '';
+unset($_SESSION['success'], $_SESSION['error']);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Shop - Lonely Travel</title>
-    <link rel="stylesheet" href="css/shop.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Alatsi&family=Bebas+Neue&family=Miniver&display=swap" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
-    <link rel="icon" href="img/download-removebg-preview.png" />
-
-    <style>
-        /* Make sure nav is positioned on top */
-        nav {
-            position: relative;
-            z-index: 9999;
-        }
-
-        .nav-item.dropdown {
-            position: relative;
-            z-index: 9999;
-        }
-
-        /* Style dropdown menu */
-        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark {
-            background-color: #fff !important;
-            color: #000 !important;
-            border: 1px solid #000 !important;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            z-index: 9999 !important;
-        }
-
-        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item {
-            color: #000 !important;
-        }
-
-        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item:hover,
-        .dropdown-menu.dropdown-menu-end.dropdown-menu-dark .dropdown-item:focus {
-            background-color: #f0f0f0 !important;
-            color: #000 !important;
-        }
-
-        /* Fix for background sections being above nav */
-        .first-container,
-        .section {
-            position: relative;
-            z-index: 1;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shop - Lonely Travel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="icon" href="img/download-removebg-preview.png" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .navbar-brand span {
+        color: #000080;
+    }
+    .card img {
+        object-fit: cover;
+        height: 200px;
+    }
+    .profile-img {
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .btn-watchlist {
+        border: 1px solid #ccc;
+        background-color: white;
+        color: #dc3545;
+    }
+    .btn-watchlist:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-    <div class="nav-header">
-        <div class="nav-logo">
-            <a href="#">Lonely <span>Travel</span></a>
-        </div>
-        <div class="nav-menu-btn" id="menu-btn">
-            <span><i class="ri-menu-line"></i></span>
-        </div>
-    </div>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm py-2 px-3">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-primary" href="index.php">
+      Lonely <span>Travel</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <ul class="nav-links" id="nav-links">
-        <li><a href="index.php" class="nav-link">Destinations</a></li>
-        <li><a href="planning.php" class="nav-link">Planning</a></li>
-        <li><a href="shop.php" class="nav-link">Shop</a></li>
-    </ul>
-
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item dropdown">
-            <a
-                class="nav-link dropdown-toggle d-flex align-items-center text-white"
-                href="#"
-                id="userDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <img src="<?= $profileImage ?>" width="30" height="30" class="rounded-circle me-2" alt="Profile" />
-                <span style="color:#000;"><?= $username ?></span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="settings.php">Settings</a></li>
-                <li><a class="dropdown-item" href="user_dashboard.php">Profile</a></li>
-                <li><a class="dropdown-item" href="watchlist.php">WatchList</a></li>
-                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                    <li><a class="dropdown-item text-primary" href="dashboard.php">Dashboard</a></li>
-                <?php endif; ?>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                    <a class="dropdown-item text-danger" href="logout.php" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
-                </li>
-            </ul>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.php">Destinations</a></li>
+        <li class="nav-item"><a class="nav-link" href="planning.php">Planning</a></li>
+        <li class="nav-item"><a class="nav-link active" href="shop.php">Shop</a></li>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+        <li class="nav-item"><a class="nav-link text-primary" href="dashboard.php">Admin Dashboard</a></li>
+        <?php endif; ?>
+      </ul>
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item me-3">
+          <a href="cart.php" class="nav-link position-relative">
+            <i class="ri-shopping-cart-line" style="font-size: 1.5rem;"></i>
+            <?php if ($cartCount > 0): ?>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><?= $cartCount ?></span>
+            <?php endif; ?>
+          </a>
         </li>
-    </ul>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="<?= htmlspecialchars($profileImage) ?>" alt="Profile" class="profile-img me-2" />
+            <?= htmlspecialchars($username) ?>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <?php if ($userId): ?>
+            <li><a class="dropdown-item" href="settings.php">Settings</a></li>
+            <li><a class="dropdown-item" href="user_dashboard.php">Profile</a></li>
+            <li><a class="dropdown-item" href="watchlist.php">Watchlist</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item text-danger" href="logout.php" onclick="return confirm('Logout?')">Logout</a></li>
+            <?php else: ?>
+            <li><a class="dropdown-item" href="signin.php">Login</a></li>
+            <li><a class="dropdown-item" href="signup.php">Register</a></li>
+            <?php endif; ?>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
 
-<section class="guidebooks-container">
-    <h1 class="guidebooks-title">Which guidebook is right for me?</h1>
-    <div class="guides">
-        <!-- Classic Guides -->
-        <div class="guide-category">
-            <h2 class="guide-heading">CLASSIC guides</h2>
-            <p class="guide-subheading">(Most Comprehensive)</p>
-            <div class="guide-images">
-                <img src="img/Rome.avif" alt="Italy Guide" class="guide-image" />
-                <img src="img/thailand.avif" alt="Thailand Guide" class="guide-image" />
-                <img src="img/new-zealand.webp" alt="New Zealand Guide" class="guide-image" />
-            </div>
-            <div class="guide-description">
-                <div class="guide-icon">
-                    <span>🔍</span>
-                    <p>In-depth and Extensive</p>
-                </div>
-                <div class="guide-icon">
-                    <span>📅</span>
-                    <p>Trip duration: 2+ weeks</p>
-                </div>
-                <p class="guide-text">For travelers seeking the most comprehensive information, these guides will equip you to explore your destination at a deeper level.</p>
-            </div>
-            <div class="popup-container">
-                <button type="button" class="btn shopNowButton">SHOP NOW</button>
-                <div class="popup" id="popup">
-                    <img src="img/404-tick.png" />
-                    <h2>Thank You!</h2>
-                    <p>Your details has been successfully submitted. Thanks!</p>
-                    <button type="button" class="btn-close">OK</button>
-                </div>
-            </div>
-        </div>
+<div class="container my-5">
+  <h1 class="mb-4 fw-bold text-center">Shop</h1>
 
-        <!-- Experience Guides -->
-        <div class="guide-category">
-            <h2 class="guide-heading">EXPERIENCE guides</h2>
-            <p class="guide-subheading">(Authentic & Unique)</p>
-            <div class="guide-images">
-                <img src="img/Tokyo.jpg" alt="Japan Guide" class="guide-image" />
-                <img src="img/death-valley.webp" alt="Andalucia Guide" class="guide-image" />
-                <img src="img/Los-Angeles.avif" alt="Tokyo Guide" class="guide-image" />
-            </div>
-            <div class="guide-description">
-                <div class="guide-icon">
-                    <span>🌍</span>
-                    <p>Local & Authentic Experiences</p>
-                </div>
-                <div class="guide-icon">
-                    <span>📅</span>
-                    <p>Trip duration: 1-2 weeks</p>
-                </div>
-                <p class="guide-text">For travelers that want to design a trip that feels unique, these guides uncover exciting new ways to explore iconic destinations.</p>
-            </div>
-            <div class="popup-container">
-                <button type="button" class="btn shopNowButton">SHOP NOW</button>
-                <div class="popup">
-                    <img src="img/404-tick.png" />
-                    <h2>Thank You!</h2>
-                    <p>Your details has been successfully submitted. Thanks!</p>
-                    <button type="button" class="btn-close">OK</button>
-                </div>
-            </div>
-        </div>
+  <?php if ($successMsg): ?>
+  <div class="alert alert-success"><?= htmlspecialchars($successMsg) ?></div>
+  <?php endif; ?>
+  <?php if ($errorMsg): ?>
+  <div class="alert alert-danger"><?= htmlspecialchars($errorMsg) ?></div>
+  <?php endif; ?>
 
-        <!-- Pocket Guides -->
-        <div class="guide-category">
-            <h2 class="guide-heading">POCKET guides</h2>
-            <p class="guide-subheading">(Top Highlights)</p>
-            <div class="guide-images">
-                <img src="img/Parking-paris.webp" alt="Berlin Guide" class="guide-image" />
-                <img src="img/Berlin.avif" alt="Valencia Guide" class="guide-image" />
-                <img src="img/Chattanooga-Featured.png" alt="Budapest Guide" class="guide-image" />
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <?php foreach ($products as $product): ?>
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="<?= htmlspecialchars($product['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title"><?= htmlspecialchars($product['name']) ?></h5>
+          <p class="card-text text-muted mb-2">$<?= number_format($product['price'], 2) ?></p>
+
+          <?php if ($userId): ?>
+          <form method="post" class="mt-auto mb-2">
+            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+            <input type="hidden" name="action" value="add_to_cart">
+            <div class="input-group input-group-sm">
+              <input type="number" name="quantity" class="form-control" value="1" min="1" required>
+              <button type="submit" class="btn btn-primary">Add to Cart</button>
             </div>
-            <div class="guide-description">
-                <div class="guide-icon">
-                    <span>✨</span>
-                    <p>Highlights and Top Experiences</p>
-                </div>
-                <div class="guide-icon">
-                    <span>📅</span>
-                    <p>Trip duration: 1-7 days</p>
-                </div>
-                <p class="guide-text">For travelers on a short trip that want to make the most of their time, these handy-sized guides cover a city's best local experiences.</p>
-            </div>
-            <div class="popup-container">
-                <button type="button" class="btn shopNowButton">SHOP NOW</button>
-                <div class="popup">
-                    <img src="img/404-tick.png" />
-                    <h2>Thank You!</h2>
-                    <p>Your details has been successfully submitted. Thanks!</p>
-                    <button type="button" class="btn-close">OK</button>
-                </div>
-            </div>
+          </form>
+
+          <form method="post" class="mt-1">
+            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+            <input type="hidden" name="quantity" value="1">
+            <input type="hidden" name="action" value="buy_now">
+            <button type="submit" class="btn btn-success w-100">Buy Now</button>
+          </form>
+
+          <a href="add_to_watchlist.php?item_type=product&item_id=<?= $product['id'] ?>" class="btn btn-watchlist w-100 mt-2">
+            ❤️ Save to Watchlist
+          </a>
+          <?php else: ?>
+          <p class="text-muted">Login to purchase or save to watchlist.</p>
+          <?php endif; ?>
         </div>
+      </div>
     </div>
-</section>
+    <?php endforeach; ?>
+  </div>
+</div>
 
-<script> window.chtlConfig = { chatbotId: "1162981525" } </script>
-<script async data-id="1162981525" id="chatling-embed-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>  
-<script src="js/shop.js"></script>
+<footer class="bg-white text-center py-3 border-top mt-auto">
+  <p class="mb-0 text-muted">© 2025 Lonely Travel. All rights reserved.</p>
+</footer>
 
-<!-- ADD THIS BOOTSTRAP JS BUNDLE FOR DROPDOWN FUNCTIONALITY -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

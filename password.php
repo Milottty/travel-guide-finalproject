@@ -1,5 +1,18 @@
 <?php
 session_start();
+
+
+// start session if not started yet
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// include navbar
+include 'navbar.php';
+
+
+
+
 include_once "config.php";
 include_once "header.php";
 
@@ -25,6 +38,8 @@ if (!isset($_SESSION['username'])) {
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="img/download-removebg-preview.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 </head>
 <body>
     <!-- Navbar Section -->
@@ -71,5 +86,7 @@ if (!isset($_SESSION['username'])) {
     <script> window.chtlConfig = { chatbotId: "1162981525" } </script>
     <script async data-id="1162981525" id="chatling-embed-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
     <script src="js/sign.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
